@@ -55,4 +55,7 @@ module.exports = {
     },
   },
   ],
+
+  pathPrefix: `/wp-gatsby`,
+
 };

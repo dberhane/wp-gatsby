@@ -27,14 +27,19 @@ const Header = () => (
       expanded="md"
     >
       <NavbarBrand
-        href="/"
         style={{
           marginLeft: 50,
-          color: "white",
-          textDecoration: "none"
         }}
       >
-        <h1>BMJ Open blogs (powered by Gatsby.JS)</h1>
+        <Link
+          to="/"
+          style={{
+            color: "white",
+            textDecoration: "none"
+          }}
+        >
+          <h1>BMJ Open blogs (powered by Gatsby.JS2)</h1>
+        </Link>
       </NavbarBrand>
     </Navbar>
   </div>

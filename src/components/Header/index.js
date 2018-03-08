@@ -1,42 +1,32 @@
-import React from "react"
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap"
-
-import Link from "gatsby-link"
+import React from 'react'
+import Link from 'gatsby-link'
 
 const Header = () => (
-  <div>
-    <Navbar
+  <div
+    style={{
+      background: 'rebeccapurple',
+      marginBottom: '1.45rem',
+    }}
+  >
+    <div
       style={{
-        background: "rebeccapurple",
-        marginBottom: "1.45rem"
+        margin: '0 auto',
+        maxWidth: 960,
+        padding: '1.45rem 1.0875rem',
       }}
-      color="rebeccapurple"
-      light
-      expanded="md"
     >
-      <NavbarBrand
-        style={{
-          marginLeft: 50,
-          color: "white",
-          textDecoration: "none"
-        }}
-        href="/"
-      >
-        <h1>BMJ Open blogs (powered by Gatsby.JS2)</h1>
-      </NavbarBrand>
-    </Navbar>
+      <h1 style={{ margin: 0 }}>
+        <Link
+          to="/"
+          style={{
+            color: 'white',
+            textDecoration: 'none',
+          }}
+        >
+          BMJ Open blogs (powered by Gatsby)
+        </Link>
+      </h1>
+    </div>
   </div>
 )
 

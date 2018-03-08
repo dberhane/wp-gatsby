@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col, Alert } from "reactstrap"
 //import PostIcons from "../components/PostIcons"
 //import Img from "gatsby-image"
 
@@ -11,13 +10,8 @@ class PostTemplate extends Component {
     const post = this.props.data.wordpressPost
 
     return (
-      <Container>
-        <Row>
-          <Col xs="9">
+      <div>
             <h1 dangerouslySetInnerHTML={{ __html: post.title }} />
-            <Alert color="primary">
-              This is a primary alert — check it out!
-            </Alert>
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
             {post.acf &&
               post.acf.page_builder_post &&
@@ -48,12 +42,7 @@ class PostTemplate extends Component {
                 }
                 return null
               })}
-          </Col>
-          <Col xs="3">
-          <h2>Side bar</h2>
-          </Col>
-        </Row>
-      </Container>
+      </div>
     )
   }
 }

@@ -29,17 +29,12 @@ const Header = () => (
       <NavbarBrand
         style={{
           marginLeft: 50,
+          color: "white",
+          textDecoration: "none"
         }}
+        href="/"
       >
-        <Link
-          to="/"
-          style={{
-            color: "white",
-            textDecoration: "none"
-          }}
-        >
-          <h1>BMJ Open blogs (powered by Gatsby.JS2)</h1>
-        </Link>
+        <h1>BMJ Open blogs (powered by Gatsby.JS2)</h1>
       </NavbarBrand>
     </Navbar>
   </div>

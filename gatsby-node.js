@@ -3,6 +3,37 @@ const Promise = require(`bluebird`)
 const path = require(`path`)
 const slash = require(`slash`)
 
+const pageQuery = `
+{
+  allWordpressPage {
+    edges {
+      node {
+        id
+        slug
+        status
+        template
+      }
+    }
+  }
+}
+`
+
+const postsQuery = `
+{
+  allWordpressPost {
+    edges {
+      node {
+        id
+        slug
+        status
+        template
+        format
+      }
+    }
+  }
+}
+`
+
 // Implement the Gatsby API “createPages”. This is
 // called after the Gatsby bootstrap is finished so you have
 // access to any information necessary to programmatically
@@ -18,22 +49,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
     // from the fetched data that you can run queries against.
 
     // ==== PAGES (WORDPRESS NATIVE) ====
-    graphql(
-      `
-        {
-          allWordpressPage {
-            edges {
-              node {
-                id
-                slug
-                status
-                template
-              }
-            }
-          }
-        }
-      `
-    )
+    graphql(pageQuery)
       .then(result => {
         if (result.errors) {
           console.log(result.errors)
@@ -66,34 +82,26 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
 
       // ==== POSTS (WORDPRESS NATIVE AND ACF) ====
       .then(() => {
-        graphql(
-          `
-            {
-              allWordpressPost {
-                edges {
-                  node {
-                    id
-                    slug
-                    status
-                    template
-                    format
-                  }
-                }
-              }
-            }
-          `
-        ).then(result => {
+        graphql(postsQuery).then(result => {
           if (result.errors) {
             console.log(result.errors)
             reject(result.errors)
           }
           const postTemplate = path.resolve(`./src/templates/post.js`)
+          const postsTemplate = path.resolve(`./src/templates/posts.js`)
+
+          // Create Posts
+          createPage({
+            path: `/posts/`,
+            component: slash(postsTemplate)
+          })
+        
           // We want to create a detailed page for each
           // post node. We'll just use the Wordpress Slug for the slug.
           // The Post ID is prefixed with 'POST_'
           _.each(result.data.allWordpressPost.edges, edge => {
             createPage({
-              path: edge.node.slug,
+              path: `/post/${edge.node.slug}`,
               component: slash(postTemplate),
               context: {
                 id: edge.node.id,

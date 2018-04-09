@@ -1,54 +1,43 @@
-import React, { Component } from "react"
-import Link from "gatsby-link"
-import PropTypes from "prop-types"
+import React, { Component } from "react";
+import Link from "gatsby-link";
 
-export const pageQuery = graphql`
-    query postsQuery{
-        allWordpressPost{
-            edges{
-                node{
-                    id
-                    title
-                    excerpt
-                    slug
-                    date(formatString: "MMMM DD, YYYY")
-                }
-            }
-        }
+const NavLink = props => {
+    if (!props.test) {
+        return <Link to={props.url}>{props.text}</Link>;
+    } else {
+        return <span>{props.text}</span>;
     }
-`
+};
 
-class PostsTemplate extends Component {
-    render() {
-        const data = this.props.data
+const IndexPage = ({ data, pathContext }) => {
+    const { group, index, first, last, pageCount } = pathContext;
+    const previousUrl = index - 1 == 1 ? "" : (index - 1).toString();
+    const nextUrl = (index + 1).toString();
 
-        return(
-            <div>
-                <h1>Posts</h1>
+    console.log(group)
 
-                {data.allWordpressPost.edges.map(({node}) => (
-                    <div key={node.slug} className={"post"} style={{ marginBottom: 50 }}>
-                        <Link to={'post/' + node.slug}>
-                            <h3>{node.title}</h3>
-                        </Link>
+    return (
+        <div>
+            <h4>{pageCount} Pages</h4>
 
-                        <div className={"post-content"} dangerouslySetInnerHTML={{__html: node.excerpt}} />
+            {group.map(({ node }) => (
+                <div key={node.slug} className={"post"} style={{ marginBottom: 50 }}>
+                    <Link to={'post/' + node.slug}>
+                        <h3>{node.title}</h3>
+                    </Link>
 
-                        {node.date}
-                    </div>
-                ))}
+                    <div className={"post-content"} dangerouslySetInnerHTML={{__html: node.excerpt}} />
 
+                    {node.date}
+                </div>
+            ))}
+            <div className="previousLink">
+                <NavLink test={first} url={"/posts/" + previousUrl} text="Go to Previous Page" />
             </div>
-        )
-    }
-}
-
-
-PostsTemplate.propTypes = {
-    data: PropTypes.object.isRequired,
-    edges: PropTypes.array,
-}
-
-
-export default PostsTemplate
-
+            <div className="nextLink">
+                <NavLink test={last} url={"/posts/" + nextUrl} text="Go to Next Page" />
+            </div>
+        </div>
+    );
+};
+export default IndexPage;

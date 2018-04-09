@@ -2,6 +2,7 @@ const _ = require(`lodash`)
 const Promise = require(`bluebird`)
 const path = require(`path`)
 const slash = require(`slash`)
+const createPaginatedPages = require("gatsby-paginate")
 
 const pageQuery = `
 {
@@ -25,7 +26,10 @@ const postsQuery = `
       node {
         id
         slug
+        title
+        excerpt
         status
+        date(formatString: "MMMM DD, YYYY")
         template
         format
       }
@@ -57,7 +61,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
         }
 
         // Create Page pages.
-        const pageTemplate = path.resolve(`./src/templates/page.js`)
+        const pageTemplate = path.resolve(`./src/templates/page.js`)        
         // We want to create a detailed page for each
         // page node. We'll just use the Wordpress Slug for the slug.
         // The Page ID is prefixed with 'PAGE_'
@@ -91,23 +95,35 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           const postsTemplate = path.resolve(`./src/templates/posts.js`)
 
           // Create Posts
-          createPage({
+/*          createPage({
             path: `/posts/`,
             component: slash(postsTemplate)
           })
-        
+*/        
+
+          createPaginatedPages({
+            edges: result.data.allWordpressPost.edges,
+            createPage: createPage,
+            pageTemplate: "src/templates/posts.js",
+            pageLength: 10,
+            pathPrefix: "posts"
+          })
+
           // We want to create a detailed page for each
           // post node. We'll just use the Wordpress Slug for the slug.
           // The Post ID is prefixed with 'POST_'
           _.each(result.data.allWordpressPost.edges, edge => {
             createPage({
-              path: `/post/${edge.node.slug}`,
+              path: `/posts/post/${edge.node.slug}`,
               component: slash(postTemplate),
               context: {
                 id: edge.node.id,
               },
             })
           })
+
+
+
           resolve()
         })
       })

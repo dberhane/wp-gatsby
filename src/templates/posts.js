@@ -22,7 +22,7 @@ const IndexPage = ({ data, pathContext }) => {
 
             {group.map(({ node }) => (
                 <div key={node.slug} className={"post"} style={{ marginBottom: 50 }}>
-                    <Link to={'post/' + node.slug}>
+                    <Link to={'/posts/post/' + node.slug}>
                         <h3>{node.title}</h3>
                     </Link>
 
